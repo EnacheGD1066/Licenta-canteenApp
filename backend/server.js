@@ -22,19 +22,21 @@ const loginLimiter = rateLimit({
 
 
 // Import routes
-const authenticateRoute = require("./routes/authenticateRoute");  // Routes for authenticating
-const menuRoute = require("./routes/menuRoute");  // Routes for menu
-const orderRoute = require("./routes/orderRoute");  // Routes for orders
+const authenticateRoute = require("./STUDENT/Users/routes/authenticateRoute");  // Routes for authenticating
+const menuRoute = require("./STUDENT/Menu/routes/menuRoute");  // Routes for menu
+const orderRoute = require("./STUDENT/Orders/routes/orderRoute");  // Routes for orders
+const cartRoute = require("./STUDENT/Cart/routes/cartRoute"); //route for cart
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-
+console.log("Ruta merge")
 app.use("/api/auth/login", loginLimiter);
 app.use("/api/auth", authenticateRoute);
 app.use("/api/menu", menuRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/cart", cartRoute);
 
 // MongoDB connection
 mongoose.connect(MONGO_URI, {
