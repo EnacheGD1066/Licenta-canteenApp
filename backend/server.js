@@ -1,18 +1,18 @@
-const MONGO_PASSWORD = process.env.MONGO_PASSWORD; // Password is saved on my local system
-const MONGO_URI = `mongodb+srv://enachegeanina20:${MONGO_PASSWORD}@canteenapp.suzsu.mongodb.net/canteen_app?retryWrites=true&w=majority`;
-
-// Debugging Mongo credentials if needed 
-// console.log("MONGO_PASSWORD:", process.env.MONGO_PASSWORD); 
-// console.log("MONGO_URI:", MONGO_URI); 
+require("dotenv").config(); // Încarcă variabilele din .env
 
 const express = require("express");  // express.js
 const mongoose = require("mongoose");   // MongoDB
 const cors = require("cors");  // API middlewares
-
 const rateLimit = require("express-rate-limit"); // brute force attack prevention
 
+// Variabilele de mediu
+const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 5000;
 
-// limiter for login
+// Debugging Mongo credentials if needed
+console.log("MONGO_URI:", MONGO_URI);
+
+// Limiter for login
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 5,  
@@ -20,18 +20,17 @@ const loginLimiter = rateLimit({
   message: { error: "Too many login attempts. Please try again later." }
 });
 
-
 // Import routes
-const authenticateRoute = require("./STUDENT/Users/routes/authenticateRoute");  // Routes for authenticating
-const menuRoute = require("./STUDENT/Menu/routes/menuRoute");  // Routes for menu
-const orderRoute = require("./STUDENT/Orders/routes/orderRoute");  // Routes for orders
-const cartRoute = require("./STUDENT/Cart/routes/cartRoute"); //route for cart
+const authenticateRoute = require("./STUDENT/Users/routes/authenticateRoute");  
+const menuRoute = require("./STUDENT/Menu/routes/menuRoute");  
+const orderRoute = require("./STUDENT/Orders/routes/orderRoute");  
+const cartRoute = require("./STUDENT/Cart/routes/cartRoute");  
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log("Ruta merge")
+console.log("Ruta merge");
 app.use("/api/auth/login", loginLimiter);
 app.use("/api/auth", authenticateRoute);
 app.use("/api/menu", menuRoute);
@@ -39,12 +38,8 @@ app.use("/api/orders", orderRoute);
 app.use("/api/cart", cartRoute);
 
 // MongoDB connection
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(MONGO_URI)
   .then(() => console.log("Mongo is connected"))
   .catch(err => console.log("ERROR:", err));
 
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server is running on... ${PORT}`));
