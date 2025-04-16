@@ -1,4 +1,4 @@
-require("dotenv").config(); // Încarcă variabilele din .env
+require("dotenv").config(); 
 
 const express = require("express");  // express.js
 const mongoose = require("mongoose");   // MongoDB
@@ -25,6 +25,8 @@ const authenticateRoute = require("./STUDENT/Users/routes/authenticateRoute");
 const menuRoute = require("./STUDENT/Menu/routes/menuRoute");  
 const orderRoute = require("./STUDENT/Orders/routes/orderRoute");  
 const cartRoute = require("./STUDENT/Cart/routes/cartRoute");  
+const paymentRoute = require("./STUDENT/Payment/routes/paymentRoute");
+
 
 const app = express();
 app.use(cors());
@@ -36,6 +38,8 @@ app.use("/api/auth", authenticateRoute);
 app.use("/api/menu", menuRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/payment", paymentRoute);
+
 
 // MongoDB connection
 mongoose.connect(MONGO_URI)
