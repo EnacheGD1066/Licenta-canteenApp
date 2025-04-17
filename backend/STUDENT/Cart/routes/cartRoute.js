@@ -1,6 +1,7 @@
 const express = require("express");
 const Cart = require("../models/cart");
 const Menu = require("../../Menu/models/menu");
+const Order = require("../../Orders/models/orders");
 const authMiddleware = require("../../Users/middlewares/authMiddleware");
 
 const router = express.Router();
@@ -73,6 +74,41 @@ router.delete("/", authMiddleware, async (req, res) => {
     const userId = req.user.id;
     await Cart.findOneAndDelete({ userId });
     res.json({ message: "Coșul a fost golit" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+//checkout 
+
+router.post("/checkout", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const cart = await Cart.findOne({ userId }).populate("items.menuItem");
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ error: "Coșul este gol" });
+    }
+
+    const totalPrice = cart.items.reduce((total, item) => {
+      return total + item.menuItem.price * item.quantity;
+    }, 0);
+
+    const order = new Order({
+      userId,
+      items: cart.items.map(item => ({
+        menuItem: item.menuItem._id,
+        quantity: item.quantity
+      })),
+      totalPrice,
+      status: "în procesare"
+    });
+
+    await order.save(); 
+    await Cart.findOneAndDelete({ userId }); 
+
+    res.json({ message: "Comanda a fost plasată cu succes", order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

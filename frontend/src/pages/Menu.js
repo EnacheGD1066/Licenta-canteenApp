@@ -22,7 +22,7 @@ const Menu = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // JWT din localStorage
+        Authorization: `Bearer ${localStorage.getItem("token")}`, 
       },
       body: JSON.stringify({ menuItemId, quantity: 1 }),
     })
