@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // fetch cart
   useEffect(() => {
     fetch("http://localhost:5000/api/cart", {
       headers: {
@@ -22,7 +23,6 @@ const Cart = () => {
       });
   }, []);
 
-  // remove one item 
   const handleRemoveItem = (menuItemId) => {
     fetch(`http://localhost:5000/api/cart/${menuItemId}`, {
       method: "DELETE",
@@ -40,7 +40,6 @@ const Cart = () => {
       .catch((error) => console.error("Error removing item:", error));
   };
 
- //clear the cart 
   const handleClearCart = () => {
     fetch("http://localhost:5000/api/cart", {
       method: "DELETE",
@@ -57,9 +56,12 @@ const Cart = () => {
   if (loading) return <p>Se încarcă coșul...</p>;
   if (!cart || !cart.items || cart.items.length === 0) return <p>Coșul tău este gol.</p>;
 
+  const total = cart.items.reduce((sum, item) => sum + item.menuItem.price * item.quantity, 0);
+
   return (
-    <div>
+    <div className="container">
       <h2>Coș de cumpărături</h2>
+
       <ul>
         {cart.items.map((item) => (
           <li key={item.menuItem._id}>
@@ -70,9 +72,18 @@ const Cart = () => {
           </li>
         ))}
       </ul>
-      <button onClick={handleClearCart} style={{ marginTop: "10px", color: "red" }}>
-        Golește coșul
-      </button>
+
+      <p style={{ fontWeight: "bold", fontSize: "18px" }}>Total: {total} RON</p>
+
+      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+        <button onClick={handleClearCart} style={{ backgroundColor: "red", color: "white" }}>
+          Golește coșul
+        </button>
+
+        <button onClick={() => navigate("/payment")} style={{ backgroundColor: "purple", color: "white" }}>
+          Mergi la plată
+        </button>
+      </div>
     </div>
   );
 };
