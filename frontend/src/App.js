@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
-import Payment from "./pages/Payment"; // ✅ am adăugat importul
+import Payment from "./pages/Payment"; 
 
 import './App.css';
 
@@ -45,7 +45,7 @@ function App() {
         <Route path="/menu" element={isAuthenticated ? <Menu /> : <Navigate to="/" />} />
         <Route path="/cart" element={isAuthenticated ? <Cart /> : <Navigate to="/" />} />
         <Route path="/orders" element={isAuthenticated ? <Orders /> : <Navigate to="/" />} />
-        <Route path="/payment" element={isAuthenticated ? <Payment /> : <Navigate to="/" />} /> {/* ✅ ruta de plată */}
+        <Route path="/payment" element={isAuthenticated ? <Payment /> : <Navigate to="/" />} /> 
       </Routes>
     </Router>
   );
