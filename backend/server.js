@@ -26,6 +26,8 @@ const menuRoute = require("./STUDENT/Menu/routes/menuRoute");
 const orderRoute = require("./STUDENT/Orders/routes/orderRoute");  
 const cartRoute = require("./STUDENT/Cart/routes/cartRoute");  
 const paymentRoute = require("./STUDENT/Payment/routes/paymentRoute");
+const adminAuthRoute = require("./ADMIN/routes/adminAuthRoute");
+
 
 
 const app = express();
@@ -39,7 +41,7 @@ app.use("/api/menu", menuRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/payment", paymentRoute);
-
+app.use("/api/admin/auth", adminAuthRoute);
 
 // MongoDB connection
 mongoose.connect(MONGO_URI)
