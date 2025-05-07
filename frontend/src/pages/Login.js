@@ -9,18 +9,28 @@ const Login = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
+  
+    const isAdmin = email === "admin@cantina.ase.ro";
+    const endpoint = isAdmin ? "/api/admin/auth/login" : "/api/auth/login";
+
+    try {
+     const response = await fetch(`http://localhost:5000${endpoint}`, {
+     method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-    });
+           });
+      const data = await response.json();
 
-    const data = await response.json();
-
-    if (response.ok) {
-      onLoginSuccess(data.token);
-    } else {
-      alert("Eroare la autentificare: " + data.error);
+      if (response.ok) {
+       
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.user.role);
+        onLoginSuccess(data.token);
+      } else {
+        alert("Eroare la autentificare: " + data.error);
+      }
+    } catch (err) {
+      alert("Eroare la conectare cu serverul.");
     }
   };
 

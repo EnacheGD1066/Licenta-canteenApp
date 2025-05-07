@@ -35,6 +35,20 @@ const AdminOrders = () => {
       .catch(err => console.error("Eroare la actualizare:", err));
   };
 
+  const handleCancelOrder = (orderId) => {
+    fetch(`http://localhost:5000/api/admin/orders/${orderId}/cancel`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then(res => res.json())
+      .then(updated => {
+        setOrders(prev => prev.map(o => o._id === orderId ? updated : o));
+      })
+      .catch(err => console.error("Eroare la anulare:", err));
+  };
+
   if (loading) return <p>Se încarcă comenzile...</p>;
   if (!orders.length) return <p>Nu există comenzi în procesare.</p>;
 
@@ -56,9 +70,14 @@ const AdminOrders = () => {
           <p style={{ fontStyle: "italic" }}>Status: {order.status}</p>
 
           {order.status === "în procesare" && (
-            <button onClick={() => handleMarkAsComplete(order._id)} style={{ marginTop: "10px" }}>
-             
-            </button>
+            <>
+              <button onClick={() => handleMarkAsComplete(order._id)} style={{ marginTop: "10px", backgroundColor: "green", color: "white" }}>
+                 Marchează ca finalizat
+              </button>
+              <button onClick={() => handleCancelOrder(order._id)} style={{ marginTop: "10px", backgroundColor: "red", color: "white", marginLeft: "10px" }}>
+                 Anulează comanda
+              </button>
+            </>
           )}
         </div>
       ))}
