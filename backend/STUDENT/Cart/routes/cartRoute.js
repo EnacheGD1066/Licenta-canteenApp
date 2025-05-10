@@ -12,7 +12,7 @@ router.get("/", authMiddleware, async (req, res) => {
     const cart = await Cart.findOne({ userId: req.user.id }).populate("items.menuItem");
 
     if (!cart || cart.items.length === 0) {
-      return res.json({ message: "Coșul tău este gol" });
+      return res.json({ message: "Your cart is empty" });
     }
 
     res.json(cart);
@@ -28,7 +28,7 @@ router.post("/", authMiddleware, async (req, res) => {
     const userId = req.user.id;
 
     const menuItem = await Menu.findById(menuItemId);
-    if (!menuItem) return res.status(404).json({ error: "Produs inexistent" });
+    if (!menuItem) return res.status(404).json({ error: "Product does not exist!" });
 
     let cart = await Cart.findOne({ userId });
 
@@ -57,7 +57,7 @@ router.delete("/:menuItemId", authMiddleware, async (req, res) => {
     const { menuItemId } = req.params;
 
     let cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ error: "Coș inexistent" });
+    if (!cart) return res.status(404).json({ error: "Cart does not exist!" });
 
     cart.items = cart.items.filter(item => item.menuItem.toString() !== menuItemId);
     await cart.save();
@@ -73,7 +73,7 @@ router.delete("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
     await Cart.findOneAndDelete({ userId });
-    res.json({ message: "Coșul a fost golit" });
+    res.json({ message: "Cart has been emptied" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -88,7 +88,7 @@ router.post("/checkout", authMiddleware, async (req, res) => {
 
     const cart = await Cart.findOne({ userId }).populate("items.menuItem");
     if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ error: "Coșul este gol" });
+      return res.status(400).json({ error: "Cart is empty" });
     }
 
     const totalPrice = cart.items.reduce((total, item) => {
@@ -102,13 +102,13 @@ router.post("/checkout", authMiddleware, async (req, res) => {
         quantity: item.quantity
       })),
       totalPrice,
-      status: "în procesare"
+      status: "Processing order."
     });
 
     await order.save(); 
     await Cart.findOneAndDelete({ userId }); 
 
-    res.json({ message: "Comanda a fost plasată cu succes", order });
+    res.json({ message: "Order was placed successfully!", order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -16,16 +16,16 @@ const Orders = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Eroare la preluarea comenzilor:", err);
+        console.error("Error processing orders:", err);
         setLoading(false);
       });
   }, []);
 
-  if (loading) return <p>Se încarcă comenzile...</p>;
-  if (orders.length === 0) return <p>Nu ai comenzi.</p>;
+  if (loading) return <p>Loading orders...</p>;
+  if (orders.length === 0) return <p>You don't hava any orders.</p>;
 
-  const processingOrders = orders.filter(order => order.status === "în procesare");
-  const completedOrders = orders.filter(order => order.status !== "în procesare");
+  const processingOrders = orders.filter(order => order.status === "Processing order.");
+  const completedOrders = orders.filter(order => order.status !== "Order Complete.");
 
   const renderOrder = (order, isProcessing = false) => (
     <div key={order._id} style={{
@@ -34,8 +34,8 @@ const Orders = () => {
       padding: "10px",
       marginBottom: "15px"
     }}>
-      <h4>{isProcessing ? "🟠 Comandă în procesare" : "Comandă"}</h4>
-      <p>Data: {new Date(order.orderDate).toLocaleString()}</p>
+      <h4>{isProcessing ? "Order in process" : "Order"}</h4>
+      <p>Date: {new Date(order.orderDate).toLocaleString()}</p>
       <ul>
         {order.items.map(item => (
           <li key={item.menuItem._id}>
@@ -50,18 +50,18 @@ const Orders = () => {
 
   return (
     <div>
-      <h2>Comenzile tale</h2>
+      <h2>Your orders:</h2>
 
       {processingOrders.length > 0 && (
         <div>
-          <h3>🟠 În procesare</h3>
+          <h3>Processing</h3>
           {processingOrders.map(order => renderOrder(order, true))}
         </div>
       )}
 
       {completedOrders.length > 0 && (
         <div>
-          <h3>Comenzi finalizate</h3>
+          <h3>Finished </h3>
           {completedOrders.map(order => renderOrder(order))}
         </div>
       )}

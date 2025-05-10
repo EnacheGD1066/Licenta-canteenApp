@@ -16,7 +16,7 @@ const AdminHome = () => {
 
   return (
     <div className="container">
-      <h2>Panou Administrator</h2>
+      <h2>Canteen Admin Panel </h2>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "20px" }}>
         <button style={buttonStyle} onClick={() => navigate("/admin/dashboard")}>
@@ -24,11 +24,11 @@ const AdminHome = () => {
         </button>
 
         <button style={buttonStyle} onClick={() => navigate("/admin/orders")}>
-           Procesare Comenzi
+           Orders Processing
         </button>
 
         <button style={buttonStyle} onClick={() => navigate("/admin/products")}>
-           Modificare Produse
+           Modify products
         </button>
       </div>
     </div>

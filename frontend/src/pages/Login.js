@@ -27,10 +27,10 @@ const Login = ({ onLoginSuccess }) => {
         localStorage.setItem("role", data.user.role);
         onLoginSuccess(data.token);
       } else {
-        alert("Eroare la autentificare: " + data.error);
+        alert("Authentification Error: " + data.error);
       }
     } catch (err) {
-      alert("Eroare la conectare cu serverul.");
+      alert("Server error!");
     }
   };
 

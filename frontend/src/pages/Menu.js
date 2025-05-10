@@ -28,23 +28,23 @@ const Menu = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert("Produs adăugat în coș!");
+        alert("Product added to cart!");
       })
       .catch((error) => console.error("Error adding to cart:", error));
   };
 
-  if (loading) return <p>Se încarcă meniul...</p>;
+  if (loading) return <p>Loading Menu...</p>;
 
   return (
     <div>
-      <h2>Meniu</h2>
+      <h2>Menu</h2>
       <ul>
         {menuItems.map((item) => (
           <li key={item._id}>
             <h3>{item.name}</h3>
             <p>{item.description}</p>
-            <p>Preț: {item.price} RON</p>
-            <button onClick={() => handleAddToCart(item._id)}>Adaugă în coș</button>
+            <p>Price: {item.price} RON</p>
+            <button onClick={() => handleAddToCart(item._id)}>Add in cart</button>
           </li>
         ))}
       </ul>

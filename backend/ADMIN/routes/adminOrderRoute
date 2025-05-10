@@ -6,7 +6,7 @@ const User = require("../../STUDENT/Users/models/users");
 
 router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find({ status: "în procesare" })
+    const orders = await Order.find({ status: "Processing order." })
       .populate("items.menuItem")
       .populate("userId", "email");
 
@@ -21,7 +21,7 @@ router.put("/:id/complete", async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      { status: "finalizat" },
+      { status: "Order Complete." },
       { new: true }
     )
       .populate("items.menuItem")
@@ -37,7 +37,7 @@ router.put("/:id/cancel", async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      { status: "anulată" },
+      { status: "Canceled" },
       { new: true }
     )
       .populate("items.menuItem")

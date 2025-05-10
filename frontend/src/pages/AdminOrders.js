@@ -16,7 +16,7 @@ const AdminOrders = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Eroare la preluarea comenzilor:", err);
+        console.error("Error processing orders:", err);
         setLoading(false);
       });
   }, []);
@@ -32,7 +32,7 @@ const AdminOrders = () => {
       .then(updated => {
         setOrders(prev => prev.map(o => o._id === orderId ? updated : o));
       })
-      .catch(err => console.error("Eroare la actualizare:", err));
+      .catch(err => console.error("Error updating orders:", err));
   };
 
   const handleCancelOrder = (orderId) => {
@@ -46,19 +46,19 @@ const AdminOrders = () => {
       .then(updated => {
         setOrders(prev => prev.map(o => o._id === orderId ? updated : o));
       })
-      .catch(err => console.error("Eroare la anulare:", err));
+      .catch(err => console.error("Error canceling order:", err));
   };
 
-  if (loading) return <p>Se încarcă comenzile...</p>;
-  if (!orders.length) return <p>Nu există comenzi în procesare.</p>;
+  if (loading) return <p>Loading orders...</p>;
+  if (!orders.length) return <p>No orders in Process</p>;
 
   return (
     <div className="container">
-      <h2>Comenzi în procesare</h2>
+      <h2>Processing Orders</h2>
       {orders.map(order => (
         <div key={order._id} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "15px", borderRadius: "8px" }}>
-          <h4>Comandă de la: {order.userId?.email || "Utilizator necunoscut"}</h4>
-          <p>Data: {new Date(order.orderDate).toLocaleString()}</p>
+          <h4>Order from: {order.userId?.email || "Unknown user."}</h4>
+          <p>Date: {new Date(order.orderDate).toLocaleString()}</p>
           <ul>
             {order.items.map(item => (
               <li key={item.menuItem._id}>
@@ -72,10 +72,10 @@ const AdminOrders = () => {
           {order.status === "în procesare" && (
             <>
               <button onClick={() => handleMarkAsComplete(order._id)} style={{ marginTop: "10px", backgroundColor: "green", color: "white" }}>
-                 Marchează ca finalizat
+                 Mark as finished
               </button>
               <button onClick={() => handleCancelOrder(order._id)} style={{ marginTop: "10px", backgroundColor: "red", color: "white", marginLeft: "10px" }}>
-                 Anulează comanda
+                 Cancel order
               </button>
             </>
           )}

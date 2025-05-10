@@ -27,9 +27,9 @@ router.post("/login", (req, res) => {
     });
   }
 
-  return res.status(401).json({ error: "Acces interzis." });
+  return res.status(401).json({ error: "Access Denied! You are not the ADMIN!" });
 });
 
 module.exports = router;
-console.log("ADMIN_EMAIL:", ADMIN_EMAIL);
-console.log("ADMIN_PASS:", ADMIN_PASS);
+//console.log("ADMIN_EMAIL:", ADMIN_EMAIL);
+//console.log("ADMIN_PASS:", ADMIN_PASS);

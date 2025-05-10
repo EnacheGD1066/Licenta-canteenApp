@@ -12,13 +12,13 @@ const AdminProductsPage = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Eroare la încărcarea produselor:", err);
+        console.error("Error loading products:", err);
         setLoading(false);
       });
   }, []);
 
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Sigur vrei să ștergi produsul?");
+    const confirmDelete = window.confirm("Are you sure you want to delete the product?");
     if (!confirmDelete) return;
 
     fetch(`http://localhost:5000/api/admin/menu/${id}`, {
@@ -28,36 +28,36 @@ const AdminProductsPage = () => {
       .then(() => {
         setProducts(prev => prev.filter(p => p._id !== id));
       })
-      .catch(err => console.error("Eroare la ștergere:", err));
+      .catch(err => console.error("Error deleting product:", err));
   };
 
-  if (loading) return <p>Se încarcă produsele...</p>;
+  if (loading) return <p>Loading products...</p>;
 
   return (
     <div className="container">
-      <h2>Produse existente</h2>
+      <h2>Products</h2>
 
       <button
         onClick={() => alert("")}
         style={{ marginBottom: "15px" }}
       >
-         Adaugă produs
+         ADD Product
       </button>
 
       <ul>
         {products.map(product => (
           <li key={product._id}>
             <h4>{product.name}</h4>
-            <p>Preț: {product.price} RON</p>
+            <p>Price: {product.price} RON</p>
             <p>{product.description}</p>
-            <p>Disponibil: {product.available ? "Da" : "Nu"}</p>
+            <p>Available: {product.available ? "Yes" : "No"}</p>
 
-            <button onClick={() => alert("Modificare Produs")} style={{ marginRight: "10px" }}>
-               Modifică
+            <button onClick={() => alert("Modify Product")} style={{ marginRight: "10px" }}>
+               Modify Product
             </button>
 
             <button onClick={() => handleDelete(product._id)} style={{ backgroundColor: "red", color: "white" }}>
-               Șterge
+               Delete
             </button>
           </li>
         ))}

@@ -12,8 +12,8 @@ const OrderSchema = new mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
   status: { 
     type: String, 
-    enum: ["în procesare", "finalizat"], 
-    default: "în procesare" 
+    enum: ["Processing order.", "Order Complete."], 
+    default: "Processing order." 
   }
 });
 

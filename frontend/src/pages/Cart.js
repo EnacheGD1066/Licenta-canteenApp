@@ -37,7 +37,7 @@ const Cart = () => {
           items: prevCart.items.filter((item) => item.menuItem._id !== menuItemId),
         }));
       })
-      .catch((error) => console.error("Error removing item:", error));
+      .catch((error) => console.error("Error deleting item:", error));
   };
 
   const handleClearCart = () => {
@@ -53,22 +53,22 @@ const Cart = () => {
       .catch((error) => console.error("Error clearing cart:", error));
   };
 
-  if (loading) return <p>Se încarcă coșul...</p>;
+  if (loading) return <p>Loading cart...</p>;
   if (!cart || !cart.items || cart.items.length === 0) return <p>Coșul tău este gol.</p>;
 
   const total = cart.items.reduce((sum, item) => sum + item.menuItem.price * item.quantity, 0);
 
   return (
     <div className="container">
-      <h2>Coș de cumpărături</h2>
+      <h2>Your cart</h2>
 
       <ul>
         {cart.items.map((item) => (
           <li key={item.menuItem._id}>
             <h3>{item.menuItem.name}</h3>
-            <p>Preț: {item.menuItem.price} RON</p>
-            <p>Cantitate: {item.quantity}</p>
-            <button onClick={() => handleRemoveItem(item.menuItem._id)}>Șterge produs</button>
+            <p>Price: {item.menuItem.price} RON</p>
+            <p>Quantity: {item.quantity}</p>
+            <button onClick={() => handleRemoveItem(item.menuItem._id)}>Delete product</button>
           </li>
         ))}
       </ul>
@@ -77,11 +77,11 @@ const Cart = () => {
 
       <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
         <button onClick={handleClearCart} style={{ backgroundColor: "red", color: "white" }}>
-          Golește coșul
+          Emtpy cart
         </button>
 
         <button onClick={() => navigate("/payment")} style={{ backgroundColor: "purple", color: "white" }}>
-          Mergi la plată
+          Go to Payment
         </button>
       </div>
     </div>

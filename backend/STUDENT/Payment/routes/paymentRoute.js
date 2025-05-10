@@ -10,14 +10,14 @@ router.post("/", authMiddleware, async (req, res) => {
     const { name, cardNumber, expiry, cvv } = req.body;
 
     if (!name || !cardNumber || !expiry || !cvv) {
-      return res.status(400).json({ error: "Toate câmpurile sunt obligatorii." });
+      return res.status(400).json({ error: "All fields are mandatory!" });
     }
 
     const userId = req.user.id;
 
     const cart = await Cart.findOne({ userId }).populate("items.menuItem");
     if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ error: "Coșul este gol." });
+      return res.status(400).json({ error: "Cart is empty!" });
     }
 
     const totalPrice = cart.items.reduce((sum, item) => {
@@ -31,7 +31,7 @@ router.post("/", authMiddleware, async (req, res) => {
         quantity: item.quantity,
       })),
       totalPrice,
-      status: "în procesare",
+      status: "Processing order.",
     });
 
     await order.save();
@@ -45,7 +45,7 @@ router.post("/", authMiddleware, async (req, res) => {
       cvv,
     });
 
-    res.json({ message: "Plată efectuată cu succes!", order });
+    res.json({ message: "Payment finished successfully!", order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

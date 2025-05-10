@@ -36,9 +36,9 @@ function App() {
       <nav>
         {isAuthenticated && role !== "admin" && (
           <>
-            <Link to="/menu">Meniu</Link>
-            <Link to="/cart">Coș</Link>
-            <Link to="/orders">Comenzile mele</Link>
+            <Link to="/menu">Menu</Link>
+            <Link to="/cart">Your cart</Link>
+            <Link to="/orders">Orders</Link>
           </>
         )}
         {isAuthenticated && (
