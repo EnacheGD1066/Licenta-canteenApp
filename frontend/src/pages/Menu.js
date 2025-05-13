@@ -18,19 +18,23 @@ const Menu = () => {
   }, []);
 
   const handleAddToCart = (menuItemId) => {
-    fetch("http://localhost:5000/api/menu/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, 
-      },
-      body: JSON.stringify({ menuItemId, quantity: 1 }),
+  fetch("http://localhost:5000/api/menu/cart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({ menuItemId, quantity: 1 }),
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.error || "Error adding product.");
+        return;
+      }
+      alert("Product added to cart!");
     })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Product added to cart!");
-      })
-      .catch((error) => console.error("Error adding to cart:", error));
+    .catch((error) => console.error("Error adding to cart: Cannot add more than 2 products.", error));
   };
 
   if (loading) return <p>Loading Menu...</p>;
