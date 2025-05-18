@@ -1,0 +1,48 @@
+const express = require("express");
+const router = express.Router();
+require("dotenv").config();
+
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
+const User = require("../../STUDENT/Users/models/users");
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+
+    const user = await User.findOne({ email });
+
+    if (!user || user.role !== "employee") {
+      return res.status(401).json({ error: "Access Denied! You are not an EMPLOYEE!" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Incorrect password!" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || "fallback_secret_key",
+      { expiresIn: "5h" }
+    );
+
+    return res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    console.error("Employee login error:", error);
+    res.status(500).json({ error: "Server error during login." });
+  }
+});
+
+module.exports = router;

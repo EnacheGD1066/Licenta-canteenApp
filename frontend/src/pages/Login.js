@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 
 const Login = ({ onLoginSuccess }) => {
@@ -9,23 +7,28 @@ const Login = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  
     const isAdmin = email === "admin@cantina.ase.ro";
-    const endpoint = isAdmin ? "/api/admin/auth/login" : "/api/auth/login";
+    const isEmployee = email === "employeeCanteen@ase.ro"; 
+
+    const endpoint = isAdmin
+      ? "/api/admin/auth/login"          // admin - .env
+      : isEmployee
+      ? "/api/employee/auth/login"       // employee -  Mongo
+      : "/api/auth/login";               // 
 
     try {
-     const response = await fetch(`http://localhost:5000${endpoint}`, {
-     method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-           });
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
       const data = await response.json();
 
       if (response.ok) {
-       
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.user.role);
-        onLoginSuccess(data.token);
+        onLoginSuccess(data.token); 
       } else {
         alert("Authentification Error: " + data.error);
       }
@@ -38,8 +41,20 @@ const Login = ({ onLoginSuccess }) => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Parolă" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Parolă"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Login</button>
       </form>
     </div>
@@ -47,5 +62,3 @@ const Login = ({ onLoginSuccess }) => {
 };
 
 export default Login;
-
-

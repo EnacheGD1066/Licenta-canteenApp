@@ -27,8 +27,9 @@ const orderRoute = require("./STUDENT/Orders/routes/orderRoute");
 const cartRoute = require("./STUDENT/Cart/routes/cartRoute");  
 const paymentRoute = require("./STUDENT/Payment/routes/paymentRoute");
 const adminAuthRoute = require("./ADMIN/routes/adminAuthRoute");
-const adminOrdersRoute = require("./ADMIN/routes/adminOrderRoute");
-const adminMenuRoute = require("./ADMIN/routes/adminMenuRoute");
+// const adminOrdersRoute = require("./ADMIN/routes/adminOrderRoute");
+// const adminMenuRoute = require("./ADMIN/routes/adminMenuRoute");
+const employeeAuthRoute = require("./EMPLOYEE/routes/employeeAuthRoute");
 
 
 const app = express();
@@ -43,9 +44,9 @@ app.use("/api/orders", orderRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/admin/auth", adminAuthRoute);
-app.use("/api/admin/orders", adminOrdersRoute);
-app.use("/api/admin/menu", adminMenuRoute);
-
+// app.use("/api/admin/orders", adminOrdersRoute);
+// app.use("/api/admin/menu", adminMenuRoute);
+app.use("/api/employee/auth", employeeAuthRoute);
 // MongoDB connection
 mongoose.connect(MONGO_URI)
   .then(() => console.log("Mongo is connected"))

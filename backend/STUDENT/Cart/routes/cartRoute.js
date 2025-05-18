@@ -28,7 +28,7 @@ router.post("/", authMiddleware, async (req, res) => {
     const userId = req.user.id;
 
     const menuItem = await Menu.findById(menuItemId);
-    if (!menuItem) return res.status(404).json({ error: "Product does not exist!" });
+    if (!menuItem) return res.status(404).json({ error: "Product does not exist!" });  
 
     let cart = await Cart.findOne({ userId });
 

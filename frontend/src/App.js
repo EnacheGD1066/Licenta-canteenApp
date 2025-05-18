@@ -7,8 +7,9 @@ import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import Payment from "./pages/Payment";
 import AdminHome from "./pages/AdminHome"; 
-import AdminOrders from "./pages/AdminOrders";
-import AdminProductsPage from "./pages/AdminProductsPage";
+import EmployeeHome from "./pages/EMPLOYEE/EmployeeHome";
+import EmployeeOrders from "./pages/EMPLOYEE/EmployeeOrders";
+import EmployeeCRUDMenu from "./pages/EMPLOYEE/EmployeeCRUDMenu";
 import './App.css';
 
 function App() {
@@ -63,6 +64,9 @@ function App() {
         <Route path="/admin" element={isAuthenticated && role === "admin" ? <AdminHome /> : <Navigate to="/" />} />
         <Route path="/admin/orders" element={isAuthenticated && role === "admin" ? <AdminOrders /> : <Navigate to="/" />} />
         <Route path="/admin/products" element={isAuthenticated && role === "admin" ? <AdminProductsPage /> : <Navigate to="/" />}/>
+        <Route path="/employee" element={isAuthenticated && role === "employee" ? <EmployeeHome /> : <Navigate to="/" />} />
+        <Route path="/employee/orders" element={isAuthenticated && role === "employee" ? <EmployeeOrders /> : <Navigate to="/" />} />
+        <Route path="/employee/menu" element={isAuthenticated && role === "employee" ? <EmployeeCRUDMenu /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
