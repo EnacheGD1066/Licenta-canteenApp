@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const EmployeeOrders = () => {
+const EmployeeOP = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -69,13 +69,13 @@ const EmployeeOrders = () => {
           <p><strong>Total:</strong> {order.totalPrice} RON</p>
           <p style={{ fontStyle: "italic" }}>Status: {order.status}</p>
 
-          {order.status === "în procesare" && (
+          {order.status === "Processing order." && (
             <>
               <button onClick={() => handleMarkAsComplete(order._id)} style={{ marginTop: "10px", backgroundColor: "green", color: "white" }}>
-                 Mark as finished
+                Mark as finished
               </button>
               <button onClick={() => handleCancelOrder(order._id)} style={{ marginTop: "10px", backgroundColor: "red", color: "white", marginLeft: "10px" }}>
-                 Cancel order
+                Cancel order
               </button>
             </>
           )}
@@ -85,4 +85,4 @@ const EmployeeOrders = () => {
   );
 };
 
-export default EmployeeOrders;
+export default EmployeeOP;

@@ -4,8 +4,9 @@ const express = require("express");  // express.js
 const mongoose = require("mongoose");   // MongoDB
 const cors = require("cors");  // API middlewares
 const rateLimit = require("express-rate-limit"); // brute force attack prevention
+const cron = require("node-cron");
 
-// Variabilele de mediu
+// .env vars
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;
 
@@ -30,6 +31,9 @@ const adminAuthRoute = require("./ADMIN/routes/adminAuthRoute");
 // const adminOrdersRoute = require("./ADMIN/routes/adminOrderRoute");
 // const adminMenuRoute = require("./ADMIN/routes/adminMenuRoute");
 const employeeAuthRoute = require("./EMPLOYEE/routes/employeeAuthRoute");
+const employeeOPRoute = require("./EMPLOYEE/routes/employeeOPRoute");
+const Order = require("./STUDENT/Orders/models/orders");
+const Menu = require("./STUDENT/Menu/models/menu");
 
 
 const app = express();
@@ -47,9 +51,38 @@ app.use("/api/admin/auth", adminAuthRoute);
 // app.use("/api/admin/orders", adminOrdersRoute);
 // app.use("/api/admin/menu", adminMenuRoute);
 app.use("/api/employee/auth", employeeAuthRoute);
+app.use("/api/employee/orders", employeeOPRoute);
+
 // MongoDB connection
 mongoose.connect(MONGO_URI)
   .then(() => console.log("Mongo is connected"))
   .catch(err => console.log("ERROR:", err));
 
 app.listen(PORT, () => console.log(`Server is running on... ${PORT}`));
+
+
+
+cron.schedule("* * * * *", async () => {
+  try {
+    await Order.updateMany(
+      {
+        status: "Order Complete.",
+        confirmedByStudent: false,
+        completedAt: { $lte: new Date(Date.now() - 60 * 60 * 1000) }
+      },
+      { status: "Order Cancelled." }
+    );
+  } catch (err) {
+    console.error("Cron error:", err);
+  }
+});
+
+
+cron.schedule("0 0 * * *", async () => {
+  try {
+    await Menu.updateMany({}, { stock: 500 });
+    console.log("Stocks have been reset to 500.");
+  } catch (err) {
+    console.error("Error resetting stocks!:", err);
+  }
+});

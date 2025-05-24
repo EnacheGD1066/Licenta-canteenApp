@@ -48,6 +48,7 @@ const Menu = () => {
             <h3>{item.name}</h3>
             <p>{item.description}</p>
             <p>Price: {item.price} RON</p>
+            <p>Stock available: {item.stock} pcs</p> 
             <button onClick={() => handleAddToCart(item._id)}>Add in cart</button>
           </li>
         ))}

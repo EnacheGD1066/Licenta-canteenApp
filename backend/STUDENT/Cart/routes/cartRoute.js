@@ -106,6 +106,15 @@ router.post("/checkout", authMiddleware, async (req, res) => {
     });
 
     await order.save(); 
+
+    for (const item of cart.items) {
+      const product = await Menu.findById(item.menuItem._id);
+      if (product) {
+        product.stock = Math.max(0, product.stock - item.quantity);
+        await product.save();
+      }
+    }
+    
     await Cart.findOneAndDelete({ userId }); 
 
     res.json({ message: "Order was placed successfully!", order });
@@ -113,5 +122,7 @@ router.post("/checkout", authMiddleware, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 module.exports = router;

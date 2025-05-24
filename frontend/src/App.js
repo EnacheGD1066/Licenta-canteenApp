@@ -12,6 +12,7 @@ import EmployeeOP from "./pages/EMPLOYEE/EmployeeOP";
 import EmployeeCRUDMenu from "./pages/EMPLOYEE/EmployeeCRUDMenu";
 import ManagerHome from "./pages/MANAGER/ManagerHome";
 import ManagerDashboard from "./pages/MANAGER/ManagerDashboard";
+import StudentHome from "./pages/StudentHome"; 
 
 import './App.css';
 
@@ -51,7 +52,7 @@ function App() {
       </nav>
 
       <Routes>
-         <Route path="/" element={
+        <Route path="/" element={
           !isAuthenticated ? (
             <Login onLoginSuccess={handleLoginSuccess} />
           ) : role === "admin" ? (
@@ -61,19 +62,28 @@ function App() {
           ) : role === "manager" ? (
             <Navigate to="/manager" />
           ) : (
-            <Navigate to="/menu" />
+            <Navigate to="/home" />
           )
         } />                                    
+        
+        {/* <Route path="/menu" element={isAuthenticated && role !== "admin" ? <Menu /> : <Navigate to="/" />} />
+        <Route path="/cart" element={isAuthenticated && role !== "admin" ? <Cart /> : <Navigate to="/" />} />
+        <Route path="/orders" element={isAuthenticated && role !== "admin" ? <Orders /> : <Navigate to="/" />} /> */}
+
+        <Route path="/home" element={isAuthenticated && role !== "admin" ? <StudentHome /> : <Navigate to="/" />} />
         <Route path="/menu" element={isAuthenticated && role !== "admin" ? <Menu /> : <Navigate to="/" />} />
         <Route path="/cart" element={isAuthenticated && role !== "admin" ? <Cart /> : <Navigate to="/" />} />
         <Route path="/orders" element={isAuthenticated && role !== "admin" ? <Orders /> : <Navigate to="/" />} />
         <Route path="/payment" element={isAuthenticated && role !== "admin" ? <Payment /> : <Navigate to="/" />} />
+
         <Route path="/admin" element={isAuthenticated && role === "admin" ? <AdminHome /> : <Navigate to="/" />} />
         {/* <Route path="/admin/orders" element={isAuthenticated && role === "admin" ? <AdminOrders /> : <Navigate to="/" />} />
         <Route path="/admin/products" element={isAuthenticated && role === "admin" ? <AdminProductsPage /> : <Navigate to="/" />}/> */}
+
         <Route path="/employee" element={isAuthenticated && role === "employee" ? <EmployeeHome /> : <Navigate to="/" />} />
         <Route path="/employee/orders" element={isAuthenticated && role === "employee" ? <EmployeeOP /> : <Navigate to="/" />} />
         <Route path="/employee/menu" element={isAuthenticated && role === "employee" ? <EmployeeCRUDMenu /> : <Navigate to="/" />} />
+
         <Route path="/manager" element={isAuthenticated && role === "manager" ? <ManagerHome /> : <Navigate to="/" />} />
         <Route path="/manager/dashboard" element={isAuthenticated && role === "manager" ? <ManagerDashboard /> : <Navigate to="/" />} />  
       </Routes>

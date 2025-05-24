@@ -12,9 +12,11 @@ const OrderSchema = new mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
   status: { 
     type: String, 
-    enum: ["Processing order.", "Order Complete."], 
+    enum: ["Processing order.", "Order Complete.", "Order Cancelled."], 
     default: "Processing order." 
-  }
+  },
+  completedAt: { type: Date }, //timer
+  confirmedByStudent: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("Order", OrderSchema);

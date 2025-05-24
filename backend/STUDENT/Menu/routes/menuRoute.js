@@ -34,7 +34,7 @@ router.post("/cart", authMiddleware, async (req, res) => {
 
     const userObjectId = mongoose.Types.ObjectId.createFromHexString(userId);
 
-    // verificare numar comenzi pe zi
+  
     const ordersToday = await Order.countDocuments({
       userId: userObjectId,
       orderDate: { $gte: startOfDay, $lte: endOfDay }

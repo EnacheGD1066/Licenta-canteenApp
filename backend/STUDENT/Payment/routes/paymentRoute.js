@@ -4,6 +4,7 @@ const authMiddleware = require("../../Users/middlewares/authMiddleware");
 const Cart = require("../../Cart/models/cart");
 const Order = require("../../Orders/models/orders");
 const Payment = require("../../Payment/models/payments");
+const Menu = require("../../Menu/models/menu");
 
 router.post("/", authMiddleware, async (req, res) => {
   try {
@@ -35,6 +36,15 @@ router.post("/", authMiddleware, async (req, res) => {
     });
 
     await order.save();
+
+    for (const item of cart.items) {
+      const product = await Menu.findById(item.menuItem._id);
+      if (product) {
+        product.stock = Math.max(0, product.stock - item.quantity);
+        await product.save();
+      }
+    }
+
     await Cart.findOneAndDelete({ userId });
 
     await Payment.create({
