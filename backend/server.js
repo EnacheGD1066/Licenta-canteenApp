@@ -34,6 +34,7 @@ const employeeAuthRoute = require("./EMPLOYEE/routes/employeeAuthRoute");
 const employeeOPRoute = require("./EMPLOYEE/routes/employeeOPRoute");
 const Order = require("./STUDENT/Orders/models/orders");
 const Menu = require("./STUDENT/Menu/models/menu");
+const employeeCRUDMenuRoute = require("./EMPLOYEE/routes/employeeCRUDMenuRoute");
 
 
 const app = express();
@@ -52,6 +53,7 @@ app.use("/api/admin/auth", adminAuthRoute);
 // app.use("/api/admin/menu", adminMenuRoute);
 app.use("/api/employee/auth", employeeAuthRoute);
 app.use("/api/employee/orders", employeeOPRoute);
+app.use("/api/employee/menu", employeeCRUDMenuRoute);
 
 // MongoDB connection
 mongoose.connect(MONGO_URI)
@@ -85,4 +87,5 @@ cron.schedule("0 0 * * *", async () => {
   } catch (err) {
     console.error("Error resetting stocks!:", err);
   }
+ // console.log("Current server time:", new Date().toString());
 });
